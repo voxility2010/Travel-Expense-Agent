@@ -7,7 +7,6 @@ host (Render, etc) with zero changes.
 
 from __future__ import annotations
 
-import os
 import tempfile
 import textwrap
 from pathlib import Path
@@ -28,15 +27,15 @@ st.set_page_config(
 )
 
 # ============================================================
-# Design tokens — Suproc Marketplace Theme
-#   Background:  #E8EDF5 (soft blue-gray)
+# Design tokens
+#   Background:  #F5F7FB (soft blue-white)
 #   Surface:     #FFFFFF
-#   Border:      #D6DDE9
-#   Accent:      #2563EB (vibrant blue)
-#   Accent dark: #1D4ED8
-#   Text:        #1E293B (primary) / #64748B (secondary)
-#   Success:     #059669 / bg #ECFDF5
-#   Warning:     #D97706 / bg #FFFBEB
+#   Border:      #E3E8F1
+#   Accent:      #2F5CFF
+#   Accent dark: #1E3FCC
+#   Text:        #101828 (primary) / #667085 (secondary)
+#   Success:     #17803D / bg #ECFDF3
+#   Warning:     #B54708 / bg #FFFAEB
 #   Type:        Inter (UI), IBM Plex Mono (data / labels)
 # ============================================================
 
@@ -44,258 +43,107 @@ st.markdown(
     textwrap.dedent(
     """
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
     html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
-    .stApp { background: #E8EDF5; }
-    .block-container { max-width: 1200px; padding-top: 1.5rem; padding-bottom: 3rem; }
+    .stApp { background: #F5F7FB; }
+    .block-container { max-width: 1080px; padding-top: 2rem; }
 
     code, .mono { font-family: 'IBM Plex Mono', monospace; }
 
-    /* ---- Top Navigation Bar ---- */
-    .top-nav {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 12px 24px; background: #FFFFFF;
-        border-bottom: 1px solid #D6DDE9; margin: -4rem -4rem 2rem -4rem;
-        position: sticky; top: 0; z-index: 100;
-    }
-    .nav-left { display: flex; align-items: center; gap: 20px; }
-    .nav-brand {
-        display: flex; align-items: center; gap: 10px;
-        font-weight: 700; font-size: 1.1rem; color: #1E293B;
-    }
-    .nav-brand .logo {
-        width: 32px; height: 32px; border-radius: 8px;
-        background: linear-gradient(135deg, #2563EB, #1D4ED8);
-        display: flex; align-items: center; justify-content: center;
-        color: white; font-size: 16px;
-    }
-    .nav-tabs {
-        display: flex; gap: 4px; background: #F1F5F9;
-        padding: 4px; border-radius: 10px;
-    }
-    .nav-tab {
-        padding: 6px 16px; border-radius: 8px; font-size: 0.85rem;
-        font-weight: 500; color: #64748B; cursor: pointer;
-    }
-    .nav-tab.active {
-        background: #FFFFFF; color: #1E293B;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    }
-    .nav-right {
-        display: flex; align-items: center; gap: 12px;
-    }
-    .nav-avatar {
-        width: 36px; height: 36px; border-radius: 50%;
-        background: linear-gradient(135deg, #F472B6, #DB2777);
-        display: flex; align-items: center; justify-content: center;
-        color: white; font-weight: 600; font-size: 0.9rem;
-    }
-
     /* ---- Header ---- */
     .app-header {
-        text-align: center; margin-bottom: 32px; padding-top: 16px;
+        display: flex; align-items: center; gap: 14px;
+        margin-bottom: 4px;
     }
-    .app-header .eyebrow {
-        font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem;
-        font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
-        color: #2563EB; margin: 0 0 10px 0;
+    .app-header .badge {
+        width: 44px; height: 44px; border-radius: 12px;
+        background: linear-gradient(135deg, #2F5CFF, #1E3FCC);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 22px; flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(47,92,255,0.25);
     }
     .app-header h1 {
-        font-size: 2.2rem; font-weight: 700; color: #1E293B;
-        margin: 0 0 12px 0; line-height: 1.15; letter-spacing: -0.02em;
+        font-size: 1.5rem; font-weight: 700; color: #101828;
+        margin: 0; line-height: 1.2;
     }
-    .app-header h1 span { color: #2563EB; }
+    .app-header .eyebrow {
+        font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
+        font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+        color: #2F5CFF; margin: 0 0 2px 0;
+    }
     .app-subtitle {
-        color: #64748B; font-size: 1rem; margin: 0 auto 32px auto;
-        max-width: 560px; line-height: 1.6; text-align: center;
+        color: #667085; font-size: 0.95rem; margin: 6px 0 28px 0;
+        max-width: 640px; line-height: 1.5;
     }
 
     /* ---- Cards ---- */
     .card {
-        background: #FFFFFF; border: 1px solid #D6DDE9; border-radius: 16px;
-        padding: 24px; margin-bottom: 20px;
-        box-shadow: 0 1px 3px rgba(30, 41, 59, 0.04), 0 1px 2px rgba(30, 41, 59, 0.02);
-        transition: box-shadow 0.2s ease;
-    }
-    .card:hover {
-        box-shadow: 0 4px 12px rgba(30, 41, 59, 0.06), 0 2px 4px rgba(30, 41, 59, 0.04);
+        background: #FFFFFF; border: 1px solid #E3E8F1; border-radius: 14px;
+        padding: 20px 22px; margin-bottom: 18px;
     }
     .card-title {
-        font-weight: 600; font-size: 0.95rem; color: #1E293B;
-        margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
-    }
-    .card-title .icon {
-        width: 28px; height: 28px; border-radius: 8px;
-        background: #EFF6FF; color: #2563EB;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 14px;
+        font-weight: 600; font-size: 0.95rem; color: #101828;
+        margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
     }
 
     /* ---- KPI tiles ---- */
-    .kpi-row { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+    .kpi-row { display: flex; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
     .kpi {
-        flex: 1; min-width: 160px;
-        background: #FFFFFF; border: 1px solid #D6DDE9; border-radius: 16px;
-        padding: 20px 22px;
-        box-shadow: 0 1px 3px rgba(30, 41, 59, 0.04);
+        flex: 1; min-width: 140px;
+        background: #FFFFFF; border: 1px solid #E3E8F1; border-radius: 14px;
+        padding: 16px 18px;
     }
     .kpi-label {
-        font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
-        text-transform: uppercase; color: #94A3B8; margin-bottom: 8px;
+        font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
+        text-transform: uppercase; color: #667085; margin-bottom: 6px;
     }
     .kpi-value {
-        font-family: 'IBM Plex Mono', monospace; font-size: 1.8rem;
-        font-weight: 600; color: #1E293B; line-height: 1.2;
+        font-family: 'IBM Plex Mono', monospace; font-size: 1.6rem;
+        font-weight: 600; color: #101828;
     }
-    .kpi-value.accent { color: #2563EB; }
-    .kpi-value.good { color: #059669; }
-    .kpi-value.warn { color: #D97706; }
-    .kpi-sub {
-        font-size: 0.8rem; color: #94A3B8; margin-top: 4px;
-    }
+    .kpi-value.accent { color: #2F5CFF; }
+    .kpi-value.good { color: #17803D; }
+    .kpi-value.warn { color: #B54708; }
 
     /* ---- Status chips ---- */
     .chip {
-        display: inline-flex; align-items: center; gap: 4px;
-        padding: 4px 12px; border-radius: 999px;
+        display: inline-block; padding: 3px 10px; border-radius: 999px;
         font-size: 0.78rem; font-weight: 600;
     }
-    .chip-ok { background: #ECFDF5; color: #059669; }
-    .chip-ok::before { content: "●"; font-size: 0.5rem; }
-    .chip-warn { background: #FFFBEB; color: #D97706; }
-    .chip-warn::before { content: "●"; font-size: 0.5rem; }
-    .chip-info { background: #EFF6FF; color: #2563EB; }
-    .chip-info::before { content: "●"; font-size: 0.5rem; }
+    .chip-ok { background: #ECFDF3; color: #17803D; }
+    .chip-warn { background: #FFFAEB; color: #B54708; }
 
     /* ---- Upload zone ---- */
     section[data-testid="stFileUploaderDropzone"] {
-        background: #FFFFFF; border: 2px dashed #CBD5E1; border-radius: 16px;
-        padding: 40px 20px;
-    }
-    section[data-testid="stFileUploaderDropzone"]:hover {
-        border-color: #2563EB; background: #FAFBFC;
-    }
-    section[data-testid="stFileUploaderDropzone"] > div > div > small {
-        color: #64748B; font-size: 0.85rem;
+        background: #FFFFFF; border: 1.5px dashed #C7D2E8; border-radius: 14px;
     }
 
     /* ---- Buttons ---- */
     .stButton > button, .stDownloadButton > button {
         border-radius: 10px; font-weight: 600; border: none;
-        padding: 10px 24px; font-size: 0.9rem;
-        transition: all 0.2s ease;
     }
     .stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
-        background: #2563EB;
-        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
+        background: #2F5CFF;
     }
     .stButton > button[kind="primary"]:hover, .stDownloadButton > button[kind="primary"]:hover {
-        background: #1D4ED8; transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
-    }
-    .stButton > button[kind="secondary"], .stDownloadButton > button[kind="secondary"] {
-        background: #FFFFFF; color: #1E293B; border: 1px solid #D6DDE9;
-    }
-    .stButton > button[kind="secondary"]:hover, .stDownloadButton > button[kind="secondary"]:hover {
-        background: #F8FAFC; border-color: #CBD5E1;
+        background: #1E3FCC;
     }
 
     /* ---- Sidebar ---- */
     section[data-testid="stSidebar"] {
-        background: #FFFFFF; border-right: 1px solid #D6DDE9;
-    }
-    section[data-testid="stSidebar"] > div {
-        padding-top: 1.5rem;
+        background: #FFFFFF; border-right: 1px solid #E3E8F1;
     }
     section[data-testid="stSidebar"] h2 {
-        font-size: 0.85rem; font-weight: 700; color: #1E293B;
-        letter-spacing: 0.02em; text-transform: uppercase;
-    }
-    section[data-testid="stSidebar"] .stMarkdown p {
-        color: #64748B; font-size: 0.85rem; line-height: 1.6;
+        font-size: 0.95rem; font-weight: 700; color: #101828;
     }
 
     /* ---- Dataframe ---- */
-    [data-testid="stDataFrame"] {
-        border: 1px solid #E2E8F0; border-radius: 12px; overflow: hidden;
-    }
-    [data-testid="stDataFrame"] th {
-        background: #F8FAFC !important; color: #475569 !important;
-        font-weight: 600 !important; font-size: 0.8rem !important;
-        text-transform: uppercase; letter-spacing: 0.04em;
-    }
-    [data-testid="stDataFrame"] td {
-        font-size: 0.88rem !important; color: #334155 !important;
-    }
+    [data-testid="stDataFrame"] { border: 1px solid #E3E8F1; border-radius: 12px; }
 
-    /* ---- Expander ---- */
-    details { 
-        background: #FFFFFF; border: 1px solid #D6DDE9; border-radius: 12px;
-        padding: 4px 16px; margin-bottom: 20px;
-    }
-    summary { font-weight: 600; color: #475569; font-size: 0.9rem; }
-    summary:hover { color: #2563EB; }
-
-    /* ---- Status widget ---- */
-    [data-testid="stStatus"] {
-        background: #FFFFFF; border: 1px solid #D6DDE9; border-radius: 12px;
-    }
-
-    /* ---- Divider ---- */
-    hr { border-color: #E2E8F0; margin: 24px 0; }
-
-    /* ---- Empty state ---- */
-    .empty-state {
-        text-align: center; padding: 60px 20px; color: #94A3B8;
-        background: #FFFFFF; border: 1px solid #D6DDE9; border-radius: 16px;
-    }
-    .empty-state .icon {
-        font-size: 3rem; margin-bottom: 16px; opacity: 0.5;
-    }
-    .empty-state h3 {
-        color: #475569; font-weight: 600; margin-bottom: 8px;
-    }
-
-    /* ---- Section headers ---- */
-    h3 {
-        font-size: 1.1rem; font-weight: 700; color: #1E293B;
-        margin: 32px 0 16px 0; letter-spacing: -0.01em;
-    }
-
-    /* ---- Scrollbar ---- */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+    hr { border-color: #E3E8F1; }
     </style>
-    """
-    ).strip(),
-    unsafe_allow_html=True,
-)
-
-# ---------- Top Navigation Bar ----------
-st.markdown(
-    textwrap.dedent(
-    """
-    <div class="top-nav">
-        <div class="nav-left">
-            <div class="nav-brand">
-                <div class="logo">⚡</div>
-                <span>Suproc</span>
-            </div>
-            <div class="nav-tabs">
-                <div class="nav-tab active">🧾 Expense Agent</div>
-                <div class="nav-tab">Explore</div>
-                <div class="nav-tab">Agents</div>
-            </div>
-        </div>
-        <div class="nav-right">
-            <div class="nav-avatar">V</div>
-        </div>
-    </div>
     """
     ).strip(),
     unsafe_allow_html=True,
@@ -306,58 +154,48 @@ st.markdown(
     textwrap.dedent(
     """
     <div class="app-header">
-        <p class="eyebrow">Connected Opportunity Network</p>
-        <h1>Travel Expense Extraction <span>Agent</span></h1>
-        <p class="app-subtitle">
-            Upload receipts, invoices, or expense statements in any mix of formats —
-            images, PDFs, Excel/CSV, or pasted text — and get back a validated,
-            categorized expense report in seconds.
-        </p>
+        <div class="badge">🧾</div>
+        <div>
+            <p class="eyebrow">Suproc Agent Marketplace</p>
+            <h1>Travel Expense Extraction Agent</h1>
+        </div>
     </div>
+    <p class="app-subtitle">
+        Upload receipts, invoices, or expense statements in any mix of formats —
+        images, PDFs, Excel/CSV, or pasted text — and get back a validated,
+        categorized expense report in seconds.
+    </p>
     """
     ).strip(),
     unsafe_allow_html=True,
 )
 
-with st.expander("How this agent works", expanded=False):
+with st.expander("How this works", expanded=False):
     st.markdown(
         textwrap.dedent(
         """
-        **1. Extract** — each file is routed to the right extractor (Groq vision for
-        photos, text-layer parsing for PDFs, direct parsing for Excel/CSV).
+        **1. You upload your expenses** — a photo of a receipt, a PDF invoice,
+        an Excel sheet, whatever you have.
 
-        **2. Validate** — deterministic checks catch missing fields, suspicious
-        amounts, out-of-range dates, and duplicate submissions. No LLM involved
-        in this step, so it's fully reproducible and auditable.
+        **2. The agent reads them** — it pulls out the vendor name, date,
+        and amount from each one automatically.
 
-        **3. Categorize** — a single batched LLM call buckets each expense into
-        a category (travel, lodging, food, etc).
+        **3. It double-checks everything** — flags anything that looks off,
+        like a duplicate receipt, a date that doesn't make sense, or an
+        unusually large amount.
 
-        **4. Report** — download a two-tab Excel report: a summary and full
-        line items.
+        **4. It sorts each expense into a category** — travel, food, lodging,
+        and so on.
+
+        **5. You get one clean Excel file** — ready to download, with a
+        summary and every expense listed out.
         """
         ).strip()
     )
 
 # ---------- Sidebar ----------
 with st.sidebar:
-    st.markdown("## Settings")
-    api_key_input = st.text_input(
-        "Groq API key",
-        type="password",
-        placeholder="gsk_...",
-        help=(
-            "Needed for image/scanned-receipt extraction and category "
-            "classification. Without it, the agent still works for Excel/CSV "
-            "input and falls back to local OCR for images, just without "
-            "categorization."
-        ),
-    )
-    if api_key_input:
-        os.environ["GROQ_API_KEY"] = api_key_input
-
-    st.divider()
-    st.markdown("**Supported formats**")
+    st.markdown("## Supported formats")
     st.markdown(
         textwrap.dedent(
         """
@@ -372,10 +210,7 @@ with st.sidebar:
     st.caption("Built for the Suproc Agent Marketplace.")
 
 # ---------- File upload ----------
-st.markdown(
-    '<div class="card-title"><span class="icon">📤</span>Upload expense files</div>',
-    unsafe_allow_html=True,
-)
+st.markdown('<div class="card-title">Upload expense files</div>', unsafe_allow_html=True)
 uploaded_files = st.file_uploader(
     "Upload expense files",
     accept_multiple_files=True,
@@ -383,7 +218,7 @@ uploaded_files = st.file_uploader(
     label_visibility="collapsed",
 )
 
-run_button = st.button("Extract expenses →", type="primary", disabled=not uploaded_files)
+run_button = st.button("Extract expenses", type="primary", disabled=not uploaded_files)
 
 if run_button and uploaded_files:
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -424,24 +259,20 @@ if "records" in st.session_state:
         f"""
         <div class="kpi-row">
             <div class="kpi">
-                <div class="kpi-label">Total Records</div>
+                <div class="kpi-label">Total records</div>
                 <div class="kpi-value">{summary.total_records}</div>
-                <div class="kpi-sub">All extracted items</div>
             </div>
             <div class="kpi">
                 <div class="kpi-label">Clean</div>
                 <div class="kpi-value good">{summary.clean_records}</div>
-                <div class="kpi-sub">Passed all checks</div>
             </div>
             <div class="kpi">
                 <div class="kpi-label">Flagged</div>
                 <div class="kpi-value warn">{summary.flagged_records}</div>
-                <div class="kpi-sub">Needs review</div>
             </div>
             <div class="kpi">
                 <div class="kpi-label">Duplicates</div>
                 <div class="kpi-value accent">{summary.duplicate_count}</div>
-                <div class="kpi-sub">Auto-detected</div>
             </div>
         </div>
         """
@@ -453,7 +284,7 @@ if "records" in st.session_state:
 
     with col_a:
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-title"><span class="icon">💱</span>Totals by currency</div>', unsafe_allow_html=True)
+        st.markdown('<div class="card-title">Totals by currency</div>', unsafe_allow_html=True)
         if summary.total_amount_by_currency:
             totals_df = pd.DataFrame(
                 [{"Currency": c, "Total": float(v)} for c, v in summary.total_amount_by_currency.items()]
@@ -465,12 +296,12 @@ if "records" in st.session_state:
 
     with col_b:
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown('<div class="card-title"><span class="icon">📊</span>Totals by category</div>', unsafe_allow_html=True)
+        st.markdown('<div class="card-title">Totals by category</div>', unsafe_allow_html=True)
         if summary.total_by_category:
             cat_df = pd.DataFrame(
                 [{"Category": c, "Total": float(v)} for c, v in summary.total_by_category.items()]
             )
-            st.bar_chart(cat_df.set_index("Category"), color="#2563EB")
+            st.bar_chart(cat_df.set_index("Category"), color="#2F5CFF")
         else:
             st.caption("No categories assigned yet.")
         st.markdown('</div>', unsafe_allow_html=True)
@@ -493,7 +324,7 @@ if "records" in st.session_state:
 
     st.markdown("<br>", unsafe_allow_html=True)
     st.download_button(
-        "Download full Excel report ↓",
+        "Download full Excel report",
         data=st.session_state["report_bytes"],
         file_name="expense_report.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -504,10 +335,8 @@ elif not uploaded_files:
     st.markdown(
         textwrap.dedent(
         """
-        <div class="empty-state">
-            <div class="icon">📂</div>
-            <h3>Ready to extract</h3>
-            <p>Upload one or more expense files above to get started.</p>
+        <div class="card" style="text-align:center; padding: 40px 20px; color:#667085;">
+            Upload one or more expense files above to get started.
         </div>
         """
         ).strip(),

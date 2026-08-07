@@ -37,16 +37,30 @@ st.set_page_config(
 #   Text:        #101828 (primary) / #667085 (secondary)
 #   Success:     #17803D / bg #ECFDF3
 #   Warning:     #B54708 / bg #FFFAEB
-#   Type:        Inter (UI), IBM Plex Mono (data / labels)
+#   Type:        Plus Jakarta Sans (UI), IBM Plex Mono (data / labels)
 # ============================================================
 
 CUSTOM_CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+/* Placeholder type — swap this @import + the two font-family declarations
+   below once the Suproc brand font is available. Everything else in this
+   file references fonts only through these two spots. */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
-html, body, [class*="css"] { font-family: 'Inter', sans-serif !important; }
+html, body, [class*="css"] { font-family: 'Plus Jakarta Sans', sans-serif !important; }
 
-.stApp { background: #F5F7FB !important; }
-.block-container { max-width: 1080px; padding-top: 2rem; }
+.stApp {
+    background: radial-gradient(120% 100% at 50% 0%, #EEF2FC 0%, #F5F7FB 45%, #F5F7FB 100%) !important;
+}
+.block-container { max-width: 1080px; padding-top: 3rem; padding-bottom: 4rem; }
+
+/* Streamlit's own toolbar (sidebar-collapse arrow + menu) sits fixed on top
+   of the page. Give it a solid background instead of transparent, or content
+   directly underneath (like our eyebrow label) gets visually clipped/cut. */
+[data-testid="stHeader"] {
+    background: #F5F7FB !important;
+    height: 3.25rem;
+}
+[data-testid="stToolbar"] { right: 1rem; }
 
 code, .mono, .stMarkdown code {
     font-family: 'IBM Plex Mono', monospace !important;
@@ -111,6 +125,7 @@ code, .mono, .stMarkdown code {
 .card {
     background: #FFFFFF; border: 1px solid #E3E8F1; border-radius: 14px;
     padding: 20px 22px; margin-bottom: 18px;
+    box-shadow: 0 1px 2px rgba(16,24,40,0.04);
 }
 .card-title {
     font-weight: 600; font-size: 0.95rem; color: #101828;
@@ -123,6 +138,7 @@ code, .mono, .stMarkdown code {
     flex: 1; min-width: 140px;
     background: #FFFFFF; border: 1px solid #E3E8F1; border-radius: 14px;
     padding: 16px 18px;
+    box-shadow: 0 1px 2px rgba(16,24,40,0.04);
 }
 .kpi-label {
     font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
@@ -163,9 +179,10 @@ section[data-testid="stFileUploaderDropzone"] > div > small {
 
 /* ---- Buttons ---- */
 .stButton > button, .stDownloadButton > button {
-    border-radius: 10px !important; font-weight: 600 !important; border: none !important;
-    font-family: 'Inter', sans-serif !important;
-    transition: background 0.15s, transform 0.1s !important;
+    border-radius: 999px !important; font-weight: 600 !important; border: none !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    padding: 0.55rem 1.4rem !important;
+    transition: background 0.15s, transform 0.1s, box-shadow 0.15s !important;
 }
 .stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
     background: #2F5CFF !important;
@@ -174,6 +191,7 @@ section[data-testid="stFileUploaderDropzone"] > div > small {
 .stButton > button[kind="primary"]:hover, .stDownloadButton > button[kind="primary"]:hover {
     background: #1E3FCC !important;
     transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(47,92,255,0.28) !important;
 }
 .stButton > button[kind="primary"]:active, .stDownloadButton > button[kind="primary"]:active {
     transform: translateY(0);
@@ -182,40 +200,78 @@ section[data-testid="stFileUploaderDropzone"] > div > small {
     background: #B4C6FC !important;
     cursor: not-allowed !important;
     transform: none !important;
+    box-shadow: none !important;
 }
+.stButton > button[kind="secondary"] {
+    background: #FFFFFF !important;
+    color: #101828 !important;
+    border: 1px solid #D0D5DD !important;
+}
+.stButton > button[kind="secondary"]:hover {
+    border-color: #2F5CFF !important;
+    color: #2F5CFF !important;
+}
+
+/* ---- Tabs (file upload vs paste text) ---- */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 4px;
+    background: #EEF1F7;
+    padding: 4px;
+    border-radius: 12px;
+    width: fit-content;
+}
+.stTabs [data-baseweb="tab"] {
+    height: 36px;
+    border-radius: 8px !important;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #667085;
+    padding: 0 16px;
+}
+.stTabs [aria-selected="true"] {
+    background: #FFFFFF !important;
+    color: #101828 !important;
+    box-shadow: 0 1px 2px rgba(16,24,40,0.06);
+}
+.stTabs [data-testid="stMarkdownContainer"] p { font-size: 0.85rem; }
 
 /* ---- Sidebar ---- */
 section[data-testid="stSidebar"] {
     background: #FFFFFF !important;
     border-right: 1px solid #E3E8F1 !important;
 }
-section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
-    font-size: 0.95rem !important;
-    font-weight: 700 !important;
-    color: #101828 !important;
-    font-family: 'Inter', sans-serif !important;
+section[data-testid="stSidebar"] .block-container { padding-top: 2rem; }
+
+.sb-eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem;
+    font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #98A2B3; margin: 0 0 12px 0;
 }
-section[data-testid="stSidebar"] .stMarkdown p, section[data-testid="stSidebar"] li {
-    color: #475467 !important;
-    font-size: 0.85rem !important;
+.sb-format {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0;
+    font-size: 0.85rem; color: #344054; font-weight: 500;
 }
-section[data-testid="stSidebar"] .stMarkdown ul {
-    padding-left: 0 !important;
-    list-style: none !important;
+.sb-format .sb-icon {
+    width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0;
+    background: #EEF2FF; color: #2F5CFF;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700;
 }
-section[data-testid="stSidebar"] .stMarkdown li {
-    margin-bottom: 8px !important;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.sb-status {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.8rem; color: #475467; font-weight: 500;
+    margin-top: 22px; padding-top: 16px;
+    border-top: 1px solid #E3E8F1;
+}
+.sb-status .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #17803D; flex-shrink: 0;
+    box-shadow: 0 0 0 3px #ECFDF3;
 }
 section[data-testid="stSidebar"] .stCaption {
     color: #98A2B3 !important;
     font-size: 0.75rem !important;
-}
-section[data-testid="stSidebar"] hr {
-    border-color: #E3E8F1 !important;
-    margin: 18px 0 !important;
 }
 
 /* ---- Dataframe ---- */
@@ -270,7 +326,7 @@ components.html(
 
         const link2 = parentDoc.createElement('link');
         link2.rel = 'stylesheet';
-        link2.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap';
+        link2.href = 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap';
         parentDoc.head.appendChild(link2);
 
         const style = parentDoc.createElement('style');
@@ -329,38 +385,57 @@ with st.expander("How this works", expanded=False):
 
 # ---------- Sidebar ----------
 with st.sidebar:
-    st.markdown("### Supported formats")
     st.markdown(
         textwrap.dedent(
         """
-        - 🖼️ Images (jpg, png, webp)
-        - 📄 PDF (digital or scanned)
-        - 📊 Excel / CSV
-        - 📝 Plain text
+        <p class="sb-eyebrow">Supported formats</p>
+        <div class="sb-format"><div class="sb-icon">IMG</div> Images — jpg, png, webp</div>
+        <div class="sb-format"><div class="sb-icon">PDF</div> PDF — digital or scanned</div>
+        <div class="sb-format"><div class="sb-icon">XLS</div> Excel / CSV</div>
+        <div class="sb-format"><div class="sb-icon">TXT</div> Pasted text</div>
+        <div class="sb-status"><div class="dot"></div> Agent online — Suproc Agent Marketplace</div>
         """
-        ).strip()
+        ).strip(),
+        unsafe_allow_html=True,
     )
-    st.divider()
-    st.caption("Built for the Suproc Agent Marketplace.")
 
 # ---------- File upload ----------
 st.markdown('<div class="card-title">Upload expense files</div>', unsafe_allow_html=True)
-uploaded_files = st.file_uploader(
-    "Upload expense files",
-    accept_multiple_files=True,
-    type=["jpg", "jpeg", "png", "webp", "bmp", "pdf", "xlsx", "xls", "csv", "txt"],
-    label_visibility="collapsed",
-)
 
-run_button = st.button("Extract expenses", type="primary", disabled=not uploaded_files)
+tab_upload, tab_paste = st.tabs(["Upload files", "Paste text"])
 
-if run_button and uploaded_files:
+with tab_upload:
+    uploaded_files = st.file_uploader(
+        "Upload expense files",
+        accept_multiple_files=True,
+        type=["jpg", "jpeg", "png", "webp", "bmp", "pdf", "xlsx", "xls", "csv", "txt"],
+        label_visibility="collapsed",
+    )
+
+with tab_paste:
+    pasted_text = st.text_area(
+        "Paste expense text",
+        placeholder="Paste a receipt, invoice text, or a list of expenses here — "
+                    "e.g. \"Uber to airport, 14 Mar 2026, ₹840\"",
+        height=160,
+        label_visibility="collapsed",
+    )
+
+has_input = bool(uploaded_files) or bool(pasted_text and pasted_text.strip())
+run_button = st.button("Extract expenses", type="primary", disabled=not has_input)
+
+if run_button and has_input:
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_paths = []
-        for uf in uploaded_files:
+        for uf in uploaded_files or []:
             path = Path(tmp_dir) / uf.name
             path.write_bytes(uf.getbuffer())
             tmp_paths.append(str(path))
+
+        if pasted_text and pasted_text.strip():
+            pasted_path = Path(tmp_dir) / "pasted_text.txt"
+            pasted_path.write_text(pasted_text.strip(), encoding="utf-8")
+            tmp_paths.append(str(pasted_path))
 
         with st.status("Processing expenses...", expanded=True) as status:
             st.write(f"Extracting from {len(tmp_paths)} file(s)...")
@@ -465,7 +540,7 @@ if "records" in st.session_state:
         type="primary",
     )
 
-elif not uploaded_files:
+elif not has_input:
     st.markdown(
         textwrap.dedent(
         """

@@ -254,6 +254,8 @@ hr { border-color: #E3E8F1 !important; }
 """
 
 # Inject CSS via components.html into parent <head> — bypasses Streamlit's sanitizer
+_css_escaped = CUSTOM_CSS.replace("`", "\\`")
+
 components.html(
     f"""
     <script>
@@ -273,14 +275,13 @@ components.html(
 
         const style = parentDoc.createElement('style');
         style.id = 'custom-app-css';
-        style.innerHTML = `{CUSTOM_CSS.replace('`', '\\`')}`;
+        style.innerHTML = `{_css_escaped}`;
         parentDoc.head.appendChild(style);
     }})();
     </script>
     """,
     height=0,
 )
-
 
 # ---------- Header ----------
 st.markdown(

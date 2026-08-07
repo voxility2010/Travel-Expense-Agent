@@ -1,0 +1,11 @@
+.git
+.gitignore
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+tests/
+output/*.xlsx
+.DS_Store
+venv/
+.venv/

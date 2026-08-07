@@ -13,6 +13,7 @@ from pathlib import Path
 
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 
 from src.categorizer import categorize_batch
 from src.report import build_summary, generate_report
@@ -39,115 +40,137 @@ st.set_page_config(
 #   Type:        Inter (UI), IBM Plex Mono (data / labels)
 # ============================================================
 
-st.markdown(
-    textwrap.dedent(
-    """
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-    html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
+CUSTOM_CSS = """
+html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
 
-    .stApp { background: #F5F7FB; }
-    .block-container { max-width: 1080px; padding-top: 2rem; }
+.stApp { background: #F5F7FB; }
+.block-container { max-width: 1080px; padding-top: 2rem; }
 
-    code, .mono { font-family: 'IBM Plex Mono', monospace; }
+code, .mono { font-family: 'IBM Plex Mono', monospace; }
 
-    /* ---- Header ---- */
-    .app-header {
-        display: flex; align-items: center; gap: 14px;
-        margin-bottom: 4px;
-    }
-    .app-header .badge {
-        width: 44px; height: 44px; border-radius: 12px;
-        background: linear-gradient(135deg, #2F5CFF, #1E3FCC);
-        display: flex; align-items: center; justify-content: center;
-        font-size: 22px; flex-shrink: 0;
-        box-shadow: 0 4px 12px rgba(47,92,255,0.25);
-    }
-    .app-header h1 {
-        font-size: 1.5rem; font-weight: 700; color: #101828;
-        margin: 0; line-height: 1.2;
-    }
-    .app-header .eyebrow {
-        font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
-        font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-        color: #2F5CFF; margin: 0 0 2px 0;
-    }
-    .app-subtitle {
-        color: #667085; font-size: 0.95rem; margin: 6px 0 28px 0;
-        max-width: 640px; line-height: 1.5;
-    }
+/* ---- Header ---- */
+.app-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 4px;
+}
+.app-header .badge {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: linear-gradient(135deg, #2F5CFF, #1E3FCC);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(47,92,255,0.25);
+}
+.app-header h1 {
+    font-size: 1.5rem; font-weight: 700; color: #101828;
+    margin: 0; line-height: 1.2;
+}
+.app-header .eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
+    font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #2F5CFF; margin: 0 0 2px 0;
+}
+.app-subtitle {
+    color: #667085; font-size: 0.95rem; margin: 6px 0 28px 0;
+    max-width: 640px; line-height: 1.5;
+}
 
-    /* ---- Cards ---- */
-    .card {
-        background: #FFFFFF; border: 1px solid #E3E8F1; border-radius: 14px;
-        padding: 20px 22px; margin-bottom: 18px;
-    }
-    .card-title {
-        font-weight: 600; font-size: 0.95rem; color: #101828;
-        margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
-    }
+/* ---- Cards ---- */
+.card {
+    background: #FFFFFF; border: 1px solid #E3E8F1; border-radius: 14px;
+    padding: 20px 22px; margin-bottom: 18px;
+}
+.card-title {
+    font-weight: 600; font-size: 0.95rem; color: #101828;
+    margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
 
-    /* ---- KPI tiles ---- */
-    .kpi-row { display: flex; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
-    .kpi {
-        flex: 1; min-width: 140px;
-        background: #FFFFFF; border: 1px solid #E3E8F1; border-radius: 14px;
-        padding: 16px 18px;
-    }
-    .kpi-label {
-        font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
-        text-transform: uppercase; color: #667085; margin-bottom: 6px;
-    }
-    .kpi-value {
-        font-family: 'IBM Plex Mono', monospace; font-size: 1.6rem;
-        font-weight: 600; color: #101828;
-    }
-    .kpi-value.accent { color: #2F5CFF; }
-    .kpi-value.good { color: #17803D; }
-    .kpi-value.warn { color: #B54708; }
+/* ---- KPI tiles ---- */
+.kpi-row { display: flex; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
+.kpi {
+    flex: 1; min-width: 140px;
+    background: #FFFFFF; border: 1px solid #E3E8F1; border-radius: 14px;
+    padding: 16px 18px;
+}
+.kpi-label {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; color: #667085; margin-bottom: 6px;
+}
+.kpi-value {
+    font-family: 'IBM Plex Mono', monospace; font-size: 1.6rem;
+    font-weight: 600; color: #101828;
+}
+.kpi-value.accent { color: #2F5CFF; }
+.kpi-value.good { color: #17803D; }
+.kpi-value.warn { color: #B54708; }
 
-    /* ---- Status chips ---- */
-    .chip {
-        display: inline-block; padding: 3px 10px; border-radius: 999px;
-        font-size: 0.78rem; font-weight: 600;
-    }
-    .chip-ok { background: #ECFDF3; color: #17803D; }
-    .chip-warn { background: #FFFAEB; color: #B54708; }
+/* ---- Status chips ---- */
+.chip {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    font-size: 0.78rem; font-weight: 600;
+}
+.chip-ok { background: #ECFDF3; color: #17803D; }
+.chip-warn { background: #FFFAEB; color: #B54708; }
 
-    /* ---- Upload zone ---- */
-    section[data-testid="stFileUploaderDropzone"] {
-        background: #FFFFFF; border: 1.5px dashed #C7D2E8; border-radius: 14px;
-    }
+/* ---- Upload zone ---- */
+section[data-testid="stFileUploaderDropzone"] {
+    background: #FFFFFF; border: 1.5px dashed #C7D2E8; border-radius: 14px;
+}
 
-    /* ---- Buttons ---- */
-    .stButton > button, .stDownloadButton > button {
-        border-radius: 10px; font-weight: 600; border: none;
-    }
-    .stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
-        background: #2F5CFF;
-    }
-    .stButton > button[kind="primary"]:hover, .stDownloadButton > button[kind="primary"]:hover {
-        background: #1E3FCC;
-    }
+/* ---- Buttons ---- */
+.stButton > button, .stDownloadButton > button {
+    border-radius: 10px; font-weight: 600; border: none;
+}
+.stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
+    background: #2F5CFF;
+}
+.stButton > button[kind="primary"]:hover, .stDownloadButton > button[kind="primary"]:hover {
+    background: #1E3FCC;
+}
 
-    /* ---- Sidebar ---- */
-    section[data-testid="stSidebar"] {
-        background: #FFFFFF; border-right: 1px solid #E3E8F1;
-    }
-    section[data-testid="stSidebar"] h2 {
-        font-size: 0.95rem; font-weight: 700; color: #101828;
-    }
+/* ---- Sidebar ---- */
+section[data-testid="stSidebar"] {
+    background: #FFFFFF; border-right: 1px solid #E3E8F1;
+}
+section[data-testid="stSidebar"] h2 {
+    font-size: 0.95rem; font-weight: 700; color: #101828;
+}
 
-    /* ---- Dataframe ---- */
-    [data-testid="stDataFrame"] { border: 1px solid #E3E8F1; border-radius: 12px; }
+/* ---- Dataframe ---- */
+[data-testid="stDataFrame"] { border: 1px solid #E3E8F1; border-radius: 12px; }
 
-    hr { border-color: #E3E8F1; }
-    </style>
-    """
-    ).strip(),
-    unsafe_allow_html=True,
+hr { border-color: #E3E8F1; }
+"""
+
+# NOTE: st.markdown(unsafe_allow_html=True) silently strips <style> tags in
+# recent Streamlit versions even though it allows plain HTML tags like <div>.
+# Injecting via components.v1.html + JS that writes directly into the PARENT
+# document's <head> sidesteps that sanitizer entirely and is the reliable
+# way to load global custom CSS in Streamlit.
+components.html(
+    f"""
+    <script>
+    const parentDoc = window.parent.document;
+    if (!parentDoc.getElementById('custom-app-css')) {{
+        const link1 = parentDoc.createElement('link');
+        link1.rel = 'preconnect';
+        link1.href = 'https://fonts.googleapis.com';
+        parentDoc.head.appendChild(link1);
+
+        const link2 = parentDoc.createElement('link');
+        link2.rel = 'stylesheet';
+        link2.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap';
+        parentDoc.head.appendChild(link2);
+
+        const style = parentDoc.createElement('style');
+        style.id = 'custom-app-css';
+        style.innerHTML = `{CUSTOM_CSS}`;
+        parentDoc.head.appendChild(style);
+    }}
+    </script>
+    """,
+    height=0,
 )
+
 
 # ---------- Header ----------
 st.markdown(

@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import os
 import tempfile
+import textwrap
 from pathlib import Path
 
 import pandas as pd
@@ -40,6 +41,7 @@ st.set_page_config(
 # ============================================================
 
 st.markdown(
+    textwrap.dedent(
     """
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -143,12 +145,14 @@ st.markdown(
 
     hr { border-color: #E3E8F1; }
     </style>
-    """,
+    """
+    ).strip(),
     unsafe_allow_html=True,
 )
 
 # ---------- Header ----------
 st.markdown(
+    textwrap.dedent(
     """
     <div class="app-header">
         <div class="badge">🧾</div>
@@ -162,12 +166,14 @@ st.markdown(
         images, PDFs, Excel/CSV, or pasted text — and get back a validated,
         categorized expense report in seconds.
     </p>
-    """,
+    """
+    ).strip(),
     unsafe_allow_html=True,
 )
 
 with st.expander("How this agent works", expanded=False):
     st.markdown(
+        textwrap.dedent(
         """
         **1. Extract** — each file is routed to the right extractor (Groq vision for
         photos, text-layer parsing for PDFs, direct parsing for Excel/CSV).
@@ -182,6 +188,7 @@ with st.expander("How this agent works", expanded=False):
         **4. Report** — download a two-tab Excel report: a summary and full
         line items.
         """
+        ).strip()
     )
 
 # ---------- Sidebar ----------
@@ -204,12 +211,14 @@ with st.sidebar:
     st.divider()
     st.markdown("**Supported formats**")
     st.markdown(
+        textwrap.dedent(
         """
         - 🖼️ Images (jpg, png, webp)
         - 📄 PDF (digital or scanned)
         - 📊 Excel / CSV
         - 📝 Plain text
         """
+        ).strip()
     )
     st.divider()
     st.caption("Built for the Suproc Agent Marketplace.")
@@ -260,6 +269,7 @@ if "records" in st.session_state:
 
     st.markdown("### Summary")
     st.markdown(
+        textwrap.dedent(
         f"""
         <div class="kpi-row">
             <div class="kpi">
@@ -279,7 +289,8 @@ if "records" in st.session_state:
                 <div class="kpi-value accent">{summary.duplicate_count}</div>
             </div>
         </div>
-        """,
+        """
+        ).strip(),
         unsafe_allow_html=True,
     )
 
@@ -336,10 +347,12 @@ if "records" in st.session_state:
 
 elif not uploaded_files:
     st.markdown(
+        textwrap.dedent(
         """
         <div class="card" style="text-align:center; padding: 40px 20px; color:#667085;">
             Upload one or more expense files above to get started.
         </div>
-        """,
+        """
+        ).strip(),
         unsafe_allow_html=True,
     )

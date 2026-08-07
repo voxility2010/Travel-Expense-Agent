@@ -1,6 +1,6 @@
 """
 Streamlit UI for the Travel Expense Extraction Agent.
-Updated with Suproc Brand Design System & Modern Hero Header.
+Updated with Suproc Brand Design System & Modern Centered Hero Header.
 """
 
 from __future__ import annotations
@@ -25,8 +25,9 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# ---------- CSS & Font Injection ----------
 CUSTOM_CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 :root {
     --app-canvas-bg: #fbfbfb;
@@ -45,8 +46,7 @@ CUSTOM_CSS = """
     --app-btn-secondary-text: rgb(30 41 59);
     --app-btn-secondary-shadow: 0 6px 14px rgba(15, 23, 42, .08), inset 0 1px 0 rgba(255, 255, 255, .82);
     
-    --app-link: #0f6be9;
-    --app-link-hover: #0957bf;
+    --app-link: #2563eb;
     --app-success: #0fc27b;
     --app-success-text: #095a39;
     
@@ -56,7 +56,7 @@ CUSTOM_CSS = """
 }
 
 html, body, [class*="css"] { 
-    font-family: 'Inter', sans-serif !important; 
+    font-family: 'Inter', -apple-system, sans-serif !important; 
     color: var(--app-text-primary) !important;
     background-color: var(--app-canvas-bg) !important;
     -webkit-font-smoothing: antialiased;
@@ -64,10 +64,10 @@ html, body, [class*="css"] {
 
 .stApp {
     background-color: var(--app-canvas-bg) !important;
-    background-image: radial-gradient(circle at top, rgba(0, 0, 0, .01), transparent 65%);
+    background-image: radial-gradient(circle at top, rgba(37, 99, 235, .03), transparent 65%);
 }
 
-.block-container { max-width: 1080px; padding-top: 3rem; padding-bottom: 4rem; }
+.block-container { max-width: 1080px; padding-top: 2rem; padding-bottom: 4rem; }
 
 [data-testid="stHeader"] {
     background: transparent !important;
@@ -83,52 +83,7 @@ code, .mono, .stMarkdown code {
     font-size: 0.85em;
 }
 
-/* ---- Modern Hero Header ---- */
-.hero-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 1.5rem 0 3.5rem 0;
-}
-.hero-eyebrow {
-    font-family: 'Inter', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--app-link);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 1.25rem;
-}
-.hero-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--app-link);
-    box-shadow: 0 0 10px rgba(15, 107, 233, 0.5);
-}
-.hero-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 3.25rem;
-    font-weight: 700;
-    color: var(--app-text-primary);
-    margin: 0 0 1.25rem 0;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
-}
-.hero-title span {
-    color: var(--app-link);
-}
-.hero-subtitle {
-    color: var(--app-text-secondary);
-    font-size: 1.1rem;
-    max-width: 680px;
-    line-height: 1.6;
-    margin: 0 auto;
-}
-
-/* ---- Expander & Cards ---- */
+/* ---- Card & Layout Elements ---- */
 .stExpander, .card, section[data-testid="stSidebar"], [data-testid="stDataFrame"], [data-testid="stStatus"] {
     background: var(--surface) !important;
     border: 1px solid var(--surface-border) !important;
@@ -151,7 +106,7 @@ code, .mono, .stMarkdown code {
     margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
 }
 
-/* ---- KPI tiles ---- */
+/* ---- KPI Tiles ---- */
 .kpi-row { display: flex; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
 .kpi {
     flex: 1; min-width: 140px;
@@ -170,7 +125,7 @@ code, .mono, .stMarkdown code {
 .kpi-value.good { color: var(--app-success-text); }
 .kpi-value.warn { color: #B54708; }
 
-/* ---- Upload zone ---- */
+/* ---- Upload Zone ---- */
 section[data-testid="stFileUploaderDropzone"] {
     background: var(--surface) !important;
     border: 1px dashed var(--app-btn-secondary-border) !important;
@@ -179,7 +134,7 @@ section[data-testid="stFileUploaderDropzone"] {
 }
 section[data-testid="stFileUploaderDropzone"]:hover {
     border-color: var(--app-link) !important;
-    background: rgba(15, 107, 233, .02) !important;
+    background: rgba(37, 99, 235, .02) !important;
 }
 
 /* ---- Buttons ---- */
@@ -191,7 +146,6 @@ section[data-testid="stFileUploaderDropzone"]:hover {
     transition: all 0.18s ease !important;
 }
 
-/* Primary Button Suproc Style */
 .stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
     background: var(--app-btn-primary-bg) !important;
     color: var(--app-btn-primary-text) !important;
@@ -201,18 +155,6 @@ section[data-testid="stFileUploaderDropzone"]:hover {
 .stButton > button[kind="primary"]:hover, .stDownloadButton > button[kind="primary"]:hover {
     background: var(--app-btn-primary-bg-hover) !important;
     transform: translateY(-1px);
-}
-
-/* Secondary Button Suproc Style */
-.stButton > button[kind="secondary"] {
-    background: var(--app-btn-secondary-bg) !important;
-    color: var(--app-btn-secondary-text) !important;
-    border: 1px solid var(--app-btn-secondary-border) !important;
-    box-shadow: var(--app-btn-secondary-shadow) !important;
-}
-.stButton > button[kind="secondary"]:hover {
-    background: var(--app-btn-secondary-bg-hover) !important;
-    color: var(--app-link) !important;
 }
 
 /* ---- Tabs ---- */
@@ -244,7 +186,7 @@ section[data-testid="stSidebar"] .block-container { padding-top: 2rem; }
 }
 .sb-format .sb-icon {
     width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0;
-    background: rgba(15, 107, 233, .08); color: var(--app-link);
+    background: rgba(37, 99, 235, .08); color: var(--app-link);
     display: flex; align-items: center; justify-content: center;
     font-size: 0.75rem; font-weight: 700;
 }
@@ -292,7 +234,7 @@ components.html(
 
         const link2 = parentDoc.createElement('link');
         link2.rel = 'stylesheet';
-        link2.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap';
+        link2.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap';
         parentDoc.head.appendChild(link2);
 
         const style = parentDoc.createElement('style');
@@ -305,23 +247,79 @@ components.html(
     height=0,
 )
 
-# ---------- Modern Hero Header ----------
+# ---------- Suproc Style Hero Header ----------
 st.markdown(
-    textwrap.dedent(
     """
-    <div class="hero-section">
-        <div class="hero-eyebrow">
-            <span class="hero-dot"></span> SUPROC AGENT MARKETPLACE
+    <div style="
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        text-align: center; 
+        padding: 2rem 0 3rem 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    ">
+        <!-- Eyebrow Badge -->
+        <div style="
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+            margin-bottom: 1.25rem;
+        ">
+            <span style="
+                display: inline-flex; 
+                align-items: center; 
+                justify-content: center; 
+                width: 20px; 
+                height: 20px; 
+                background-color: #dbeafe; 
+                border-radius: 50%;
+            ">
+                <span style="
+                    width: 7px; 
+                    height: 7px; 
+                    background-color: #2563eb; 
+                    border-radius: 50%;
+                "></span>
+            </span>
+            <span style="
+                font-size: 0.78rem; 
+                font-weight: 700; 
+                letter-spacing: 0.08em; 
+                color: #2563eb; 
+                text-transform: uppercase;
+            ">SUPROC AGENT MARKETPLACE</span>
         </div>
-        <h1 class="hero-title">Travel Expense <span>Extraction Agent</span></h1>
-        <p class="hero-subtitle">
-            Upload receipts, invoices, or expense statements in any mix of formats —
-            images, PDFs, Excel/CSV, or pasted text — and get back a validated,
+
+        <!-- Main Heading -->
+        <h1 style="
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+            font-size: 3.5rem !important;
+            font-weight: 350 !important;
+            color: #1a1a1a !important;
+            line-height: 1.12 !important;
+            letter-spacing: -0.035em !important;
+            margin: 0 0 1.25rem 0 !important;
+            text-align: center !important;
+        ">
+            Find the right opportunity.<br>
+            Build what comes <span style="color: #2563eb; font-weight: 400;">next.</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p style="
+            color: #4b5563; 
+            font-size: 1.1rem; 
+            font-weight: 400; 
+            max-width: 640px; 
+            line-height: 1.6; 
+            margin: 0 auto;
+        ">
+            Upload receipts, invoices, or expense statements in any mix of formats — 
+            images, PDFs, Excel/CSV, or pasted text — and get back a validated, 
             categorized expense report in seconds.
         </p>
     </div>
-    """
-    ).strip(),
+    """,
     unsafe_allow_html=True,
 )
 
@@ -364,7 +362,7 @@ with st.sidebar:
         unsafe_allow_html=True,
     )
 
-# ---------- File upload ----------
+# ---------- File Upload / Input ----------
 st.markdown('<div class="card-title">Upload expense files</div>', unsafe_allow_html=True)
 
 tab_upload, tab_paste = st.tabs(["Upload files", "Paste text"])
@@ -422,7 +420,7 @@ if run_button and has_input:
         st.session_state["records"] = records
         st.session_state["report_bytes"] = report_bytes
 
-# ---------- Results ----------
+# ---------- Results Display ----------
 if "records" in st.session_state:
     records = st.session_state["records"]
     summary = build_summary(records)
@@ -475,7 +473,7 @@ if "records" in st.session_state:
             cat_df = pd.DataFrame(
                 [{"Category": c, "Total": float(v)} for c, v in summary.total_by_category.items()]
             )
-            st.bar_chart(cat_df.set_index("Category"), color="#0f6be9", horizontal=True)
+            st.bar_chart(cat_df.set_index("Category"), color="#2563eb", horizontal=True)
         else:
             st.caption("No categories assigned yet.")
         st.markdown('</div>', unsafe_allow_html=True)

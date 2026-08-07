@@ -41,12 +41,21 @@ st.set_page_config(
 # ============================================================
 
 CUSTOM_CSS = """
-html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
-.stApp { background: #F5F7FB; }
+html, body, [class*="css"] { font-family: 'Inter', sans-serif !important; }
+
+.stApp { background: #F5F7FB !important; }
 .block-container { max-width: 1080px; padding-top: 2rem; }
 
-code, .mono { font-family: 'IBM Plex Mono', monospace; }
+code, .mono, .stMarkdown code {
+    font-family: 'IBM Plex Mono', monospace !important;
+    background: #F2F4F7;
+    color: #101828;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 0.85em;
+}
 
 /* ---- Header ---- */
 .app-header {
@@ -72,6 +81,30 @@ code, .mono { font-family: 'IBM Plex Mono', monospace; }
 .app-subtitle {
     color: #667085; font-size: 0.95rem; margin: 6px 0 28px 0;
     max-width: 640px; line-height: 1.5;
+}
+
+/* ---- Expander ---- */
+.stExpander {
+    background: #FFFFFF !important;
+    border: 1px solid #E3E8F1 !important;
+    border-radius: 10px !important;
+    overflow: hidden;
+    margin-bottom: 20px !important;
+}
+.stExpander > details > summary {
+    font-weight: 500;
+    color: #344054;
+    font-size: 0.9rem;
+    padding: 10px 16px;
+}
+.stExpander > details > summary:hover {
+    background: #F9FAFB;
+}
+.stExpander > details > div {
+    padding: 0 16px 14px 16px;
+    color: #475467;
+    font-size: 0.9rem;
+    line-height: 1.6;
 }
 
 /* ---- Cards ---- */
@@ -113,44 +146,121 @@ code, .mono { font-family: 'IBM Plex Mono', monospace; }
 
 /* ---- Upload zone ---- */
 section[data-testid="stFileUploaderDropzone"] {
-    background: #FFFFFF; border: 1.5px dashed #C7D2E8; border-radius: 14px;
+    background: #FFFFFF !important;
+    border: 1.5px dashed #C7D2E8 !important;
+    border-radius: 14px !important;
+    padding: 12px;
+    transition: border-color 0.2s, background 0.2s;
+}
+section[data-testid="stFileUploaderDropzone"]:hover {
+    border-color: #2F5CFF !important;
+    background: #F8FAFF !important;
+}
+section[data-testid="stFileUploaderDropzone"] > div > small {
+    color: #667085 !important;
+    font-size: 0.78rem !important;
 }
 
 /* ---- Buttons ---- */
 .stButton > button, .stDownloadButton > button {
-    border-radius: 10px; font-weight: 600; border: none;
+    border-radius: 10px !important; font-weight: 600 !important; border: none !important;
+    font-family: 'Inter', sans-serif !important;
+    transition: background 0.15s, transform 0.1s !important;
 }
 .stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
-    background: #2F5CFF;
+    background: #2F5CFF !important;
+    box-shadow: 0 1px 2px rgba(47,92,255,0.15) !important;
 }
 .stButton > button[kind="primary"]:hover, .stDownloadButton > button[kind="primary"]:hover {
-    background: #1E3FCC;
+    background: #1E3FCC !important;
+    transform: translateY(-1px);
+}
+.stButton > button[kind="primary"]:active, .stDownloadButton > button[kind="primary"]:active {
+    transform: translateY(0);
+}
+.stButton > button[kind="primary"]:disabled {
+    background: #B4C6FC !important;
+    cursor: not-allowed !important;
+    transform: none !important;
 }
 
 /* ---- Sidebar ---- */
 section[data-testid="stSidebar"] {
-    background: #FFFFFF; border-right: 1px solid #E3E8F1;
+    background: #FFFFFF !important;
+    border-right: 1px solid #E3E8F1 !important;
 }
-section[data-testid="stSidebar"] h2 {
-    font-size: 0.95rem; font-weight: 700; color: #101828;
+section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #101828 !important;
+    font-family: 'Inter', sans-serif !important;
+}
+section[data-testid="stSidebar"] .stMarkdown p, section[data-testid="stSidebar"] li {
+    color: #475467 !important;
+    font-size: 0.85rem !important;
+}
+section[data-testid="stSidebar"] .stMarkdown ul {
+    padding-left: 0 !important;
+    list-style: none !important;
+}
+section[data-testid="stSidebar"] .stMarkdown li {
+    margin-bottom: 8px !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+section[data-testid="stSidebar"] .stCaption {
+    color: #98A2B3 !important;
+    font-size: 0.75rem !important;
+}
+section[data-testid="stSidebar"] hr {
+    border-color: #E3E8F1 !important;
+    margin: 18px 0 !important;
 }
 
 /* ---- Dataframe ---- */
-[data-testid="stDataFrame"] { border: 1px solid #E3E8F1; border-radius: 12px; }
+[data-testid="stDataFrame"] {
+    border: 1px solid #E3E8F1 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+}
+[data-testid="stDataFrame"] th {
+    background: #F9FAFB !important;
+    color: #475467 !important;
+    font-weight: 500 !important;
+    font-size: 0.82rem !important;
+    border-bottom: 1px solid #E3E8F1 !important;
+}
+[data-testid="stDataFrame"] td {
+    color: #344054 !important;
+    font-size: 0.85rem !important;
+    border-bottom: 1px solid #F2F4F7 !important;
+}
 
-hr { border-color: #E3E8F1; }
+/* ---- Status widget ---- */
+[data-testid="stStatus"] {
+    background: #FFFFFF !important;
+    border: 1px solid #E3E8F1 !important;
+    border-radius: 12px !important;
+}
+
+/* ---- Bar chart override ---- */
+[data-testid="stVegaLiteChart"] {
+    background: #FFFFFF !important;
+    border-radius: 12px !important;
+}
+
+hr { border-color: #E3E8F1 !important; }
 """
 
-# NOTE: st.markdown(unsafe_allow_html=True) silently strips <style> tags in
-# recent Streamlit versions even though it allows plain HTML tags like <div>.
-# Injecting via components.v1.html + JS that writes directly into the PARENT
-# document's <head> sidesteps that sanitizer entirely and is the reliable
-# way to load global custom CSS in Streamlit.
+# Inject CSS via components.html into parent <head> — bypasses Streamlit's sanitizer
 components.html(
     f"""
     <script>
-    const parentDoc = window.parent.document;
-    if (!parentDoc.getElementById('custom-app-css')) {{
+    (function() {{
+        const parentDoc = window.parent.document;
+        if (parentDoc.getElementById('custom-app-css')) return;
+        
         const link1 = parentDoc.createElement('link');
         link1.rel = 'preconnect';
         link1.href = 'https://fonts.googleapis.com';
@@ -163,9 +273,9 @@ components.html(
 
         const style = parentDoc.createElement('style');
         style.id = 'custom-app-css';
-        style.innerHTML = `{CUSTOM_CSS}`;
+        style.innerHTML = `{CUSTOM_CSS.replace('`', '\\`')}`;
         parentDoc.head.appendChild(style);
-    }}
+    }})();
     </script>
     """,
     height=0,
@@ -218,7 +328,7 @@ with st.expander("How this works", expanded=False):
 
 # ---------- Sidebar ----------
 with st.sidebar:
-    st.markdown("## Supported formats")
+    st.markdown("### Supported formats")
     st.markdown(
         textwrap.dedent(
         """
@@ -324,7 +434,7 @@ if "records" in st.session_state:
             cat_df = pd.DataFrame(
                 [{"Category": c, "Total": float(v)} for c, v in summary.total_by_category.items()]
             )
-            st.bar_chart(cat_df.set_index("Category"), color="#2F5CFF")
+            st.bar_chart(cat_df.set_index("Category"), color="#2F5CFF", horizontal=True)
         else:
             st.caption("No categories assigned yet.")
         st.markdown('</div>', unsafe_allow_html=True)
@@ -338,9 +448,9 @@ if "records" in st.session_state:
             "Date": r.expense_date,
             "Amount": float(r.amount) if r.amount is not None else None,
             "Currency": r.currency,
-            "Category": r.category.value,
+            "Category": r.category.value if hasattr(r.category, 'value') else str(r.category),
             "Method": r.extraction_method,
-            "Status": "Clean" if r.is_clean() else "Flagged: " + ", ".join(f.value for f in r.flags),
+            "Status": "Clean" if r.is_clean() else "Flagged: " + ", ".join(f.value if hasattr(f, 'value') else str(f) for f in r.flags),
         })
     display_df = pd.DataFrame(rows)
     st.dataframe(display_df, hide_index=True, use_container_width=True)
@@ -358,7 +468,7 @@ elif not uploaded_files:
     st.markdown(
         textwrap.dedent(
         """
-        <div class="card" style="text-align:center; padding: 40px 20px; color:#667085;">
+        <div class="card" style="text-align:center; padding: 48px 20px; color:#667085; margin-top: 18px;">
             Upload one or more expense files above to get started.
         </div>
         """

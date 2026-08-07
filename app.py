@@ -1,6 +1,6 @@
 """
 Streamlit UI for the Travel Expense Extraction Agent.
-Updated with Suproc Brand Design System.
+Updated with Suproc Brand Design System & Modern Hero Header.
 """
 
 from __future__ import annotations
@@ -83,31 +83,49 @@ code, .mono, .stMarkdown code {
     font-size: 0.85em;
 }
 
-/* ---- Header ---- */
-.app-header {
-    display: flex; align-items: center; gap: 14px;
-    margin-bottom: 4px;
+/* ---- Modern Hero Header ---- */
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem 0 3.5rem 0;
 }
-.app-header .badge {
-    width: 44px; height: 44px; border-radius: 12px;
-    background: var(--surface);
-    border: 1px solid var(--surface-border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; flex-shrink: 0;
-    box-shadow: var(--shadow-1);
+.hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--app-link);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 1.25rem;
 }
-.app-header h1 {
-    font-size: 1.75rem; font-weight: 700; color: var(--app-text-primary);
-    margin: 0; line-height: 1.2; letter-spacing: -0.02em;
+.hero-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--app-link);
+    box-shadow: 0 0 10px rgba(15, 107, 233, 0.5);
 }
-.app-header .eyebrow {
-    font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
-    font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--app-link); margin: 0 0 2px 0;
+.hero-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 3.25rem;
+    font-weight: 700;
+    color: var(--app-text-primary);
+    margin: 0 0 1.25rem 0;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
 }
-.app-subtitle {
-    color: var(--app-text-secondary); font-size: 0.95rem; margin: 6px 0 28px 0;
-    max-width: 640px; line-height: 1.58;
+.hero-title span {
+    color: var(--app-link);
+}
+.hero-subtitle {
+    color: var(--app-text-secondary);
+    font-size: 1.1rem;
+    max-width: 680px;
+    line-height: 1.6;
+    margin: 0 auto;
 }
 
 /* ---- Expander & Cards ---- */
@@ -287,22 +305,21 @@ components.html(
     height=0,
 )
 
-# ---------- Header ----------
+# ---------- Modern Hero Header ----------
 st.markdown(
     textwrap.dedent(
     """
-    <div class="app-header">
-        <div class="badge">🧾</div>
-        <div>
-            <p class="eyebrow">Suproc Agent Marketplace</p>
-            <h1>Travel Expense Extraction Agent</h1>
+    <div class="hero-section">
+        <div class="hero-eyebrow">
+            <span class="hero-dot"></span> SUPROC AGENT MARKETPLACE
         </div>
+        <h1 class="hero-title">Travel Expense <span>Extraction Agent</span></h1>
+        <p class="hero-subtitle">
+            Upload receipts, invoices, or expense statements in any mix of formats —
+            images, PDFs, Excel/CSV, or pasted text — and get back a validated,
+            categorized expense report in seconds.
+        </p>
     </div>
-    <p class="app-subtitle">
-        Upload receipts, invoices, or expense statements in any mix of formats —
-        images, PDFs, Excel/CSV, or pasted text — and get back a validated,
-        categorized expense report in seconds.
-    </p>
     """
     ).strip(),
     unsafe_allow_html=True,

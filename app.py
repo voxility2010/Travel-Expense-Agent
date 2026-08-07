@@ -282,82 +282,30 @@ components.html(
 
 # ---------- Hero Header with Globe Arc ----------
 st.markdown(
-    """
-    <div style="
-        display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        text-align: center; 
-        padding: 2.5rem 0 1rem 0;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    ">
-        <!-- Eyebrow Badge -->
-        <div style="
-            display: inline-flex; 
-            align-items: center; 
-            gap: 8px; 
-            margin-bottom: 1.25rem;
-        ">
-            <span style="
-                display: inline-flex; 
-                align-items: center; 
-                justify-content: center; 
-                width: 20px; 
-                height: 20px; 
-                background-color: #dbeafe; 
-                border-radius: 50%;
-            ">
-                <span style="
-                    width: 7px; 
-                    height: 7px; 
-                    background-color: #2563eb; 
-                    border-radius: 50%;
-                "></span>
-            </span>
-            <span style="
-                font-size: 0.78rem; 
-                font-weight: 700; 
-                letter-spacing: 0.08em; 
-                color: #2563eb; 
-                text-transform: uppercase;
-            ">SUPROC AGENT MARKETPLACE</span>
+    textwrap.dedent(
+        """
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2.5rem 0 1rem 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 1.25rem;">
+                <span style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; background-color: #dbeafe; border-radius: 50%;">
+                    <span style="width: 7px; height: 7px; background-color: #2563eb; border-radius: 50%;"></span>
+                </span>
+                <span style="font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; color: #2563eb; text-transform: uppercase;">SUPROC AGENT MARKETPLACE</span>
+            </div>
+            <h1 style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important; font-size: 3.5rem !important; font-weight: 350 !important; color: #1a1a1a !important; line-height: 1.12 !important; letter-spacing: -0.035em !important; margin: 0 0 1.25rem 0 !important; text-align: center !important;">
+                Find the right opportunity.<br>
+                Build what comes <span style="color: #2563eb; font-weight: 400;">next.</span>
+            </h1>
+            <p style="color: #4b5563; font-size: 1.1rem; font-weight: 400; max-width: 640px; line-height: 1.6; margin: 0 auto;">
+                Upload receipts, invoices, or expense statements in any mix of formats — 
+                images, PDFs, Excel/CSV, or pasted text — and get back a validated, 
+                categorized expense report in seconds.
+            </p>
         </div>
-
-        <!-- Main Heading -->
-        <h1 style="
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
-            font-size: 3.5rem !important;
-            font-weight: 350 !important;
-            color: #1a1a1a !important;
-            line-height: 1.12 !important;
-            letter-spacing: -0.035em !important;
-            margin: 0 0 1.25rem 0 !important;
-            text-align: center !important;
-        ">
-            Find the right opportunity.<br>
-            Build what comes <span style="color: #2563eb; font-weight: 400;">next.</span>
-        </h1>
-
-        <!-- Subtitle -->
-        <p style="
-            color: #4b5563; 
-            font-size: 1.1rem; 
-            font-weight: 400; 
-            max-width: 640px; 
-            line-height: 1.6; 
-            margin: 0 auto;
-        ">
-            Upload receipts, invoices, or expense statements in any mix of formats — 
-            images, PDFs, Excel/CSV, or pasted text — and get back a validated, 
-            categorized expense report in seconds.
-        </p>
-    </div>
-
-    <!-- Curved Globe Horizon Line -->
-    <div class="globe-horizon-container">
-        <div class="globe-arc"></div>
-    </div>
-    """,
+        <div class="globe-horizon-container">
+            <div class="globe-arc"></div>
+        </div>
+        """
+    ).strip(),
     unsafe_allow_html=True,
 )
 

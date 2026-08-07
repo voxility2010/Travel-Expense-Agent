@@ -26,6 +26,7 @@ st.set_page_config(
 )
 
 # ---------- CSS & Atmosphere Background Injection ----------
+# ---------- CSS & Atmosphere Background Injection ----------
 CUSTOM_CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
@@ -62,6 +63,11 @@ html, body, [class*="css"] {
     -webkit-font-smoothing: antialiased;
 }
 
+/* Prevent horizontal scrollbar during breakout */
+body, .stApp {
+    overflow-x: hidden !important;
+}
+
 /* Background Blue Radial Glow */
 .stApp {
     background-color: #ffffff !important;
@@ -92,10 +98,14 @@ code, .mono, .stMarkdown code {
     font-size: 0.85em;
 }
 
-/* ---- Globe Arc Horizon Effect ---- */
+/* ---- Globe Arc Horizon Breakout (Spans 100% Screen Width) ---- */
 .globe-horizon-container {
     position: relative;
-    width: 100%;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
     height: 60px;
     margin-top: 1rem;
     margin-bottom: 2.5rem;
@@ -107,7 +117,7 @@ code, .mono, .stMarkdown code {
 .globe-arc {
     position: absolute;
     top: 0;
-    width: 180%;
+    width: 140vw;
     height: 600px;
     border-radius: 50%;
     border-top: 1.5px solid rgba(96, 165, 250, 0.85);

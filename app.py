@@ -1,6 +1,6 @@
 """
 Streamlit UI for the Travel Expense Extraction Agent.
-Updated with Suproc Brand Design System & Modern Centered Hero Header.
+Updated with Suproc Brand Design System, Blue Atmospheric Glow & Curved Globe Horizon.
 """
 
 from __future__ import annotations
@@ -25,12 +25,12 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ---------- CSS & Font Injection ----------
+# ---------- CSS & Atmosphere Background Injection ----------
 CUSTOM_CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 :root {
-    --app-canvas-bg: #fbfbfb;
+    --app-canvas-bg: #ffffff;
     --app-text-primary: rgb(17 24 39);
     --app-text-secondary: rgb(71 85 105);
     
@@ -50,9 +50,9 @@ CUSTOM_CSS = """
     --app-success: #0fc27b;
     --app-success-text: #095a39;
     
-    --surface: rgba(255, 255, 255, .98);
-    --surface-border: rgba(15, 23, 42, .06);
-    --shadow-1: 0 6px 14px rgba(15, 23, 42, .04);
+    --surface: rgba(255, 255, 255, .95);
+    --surface-border: rgba(15, 23, 42, .08);
+    --shadow-1: 0 8px 20px rgba(15, 23, 42, .04);
 }
 
 html, body, [class*="css"] { 
@@ -62,12 +62,21 @@ html, body, [class*="css"] {
     -webkit-font-smoothing: antialiased;
 }
 
+/* Background Blue Radial Glow */
 .stApp {
-    background-color: var(--app-canvas-bg) !important;
-    background-image: radial-gradient(circle at top, rgba(37, 99, 235, .03), transparent 65%);
+    background-color: #ffffff !important;
+    background-image: 
+        radial-gradient(ellipse 120% 70% at 50% -10%, rgba(186, 230, 253, 0.65), rgba(219, 234, 254, 0.35) 40%, rgba(255, 255, 255, 0) 75%) !important;
+    background-attachment: fixed !important;
 }
 
-.block-container { max-width: 1080px; padding-top: 2rem; padding-bottom: 4rem; }
+.block-container { 
+    max-width: 1080px; 
+    padding-top: 2rem; 
+    padding-bottom: 4rem; 
+    position: relative;
+    z-index: 2;
+}
 
 [data-testid="stHeader"] {
     background: transparent !important;
@@ -83,12 +92,36 @@ code, .mono, .stMarkdown code {
     font-size: 0.85em;
 }
 
+/* ---- Globe Arc Horizon Effect ---- */
+.globe-horizon-container {
+    position: relative;
+    width: 100%;
+    height: 60px;
+    margin-top: 1rem;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.globe-arc {
+    position: absolute;
+    top: 0;
+    width: 180%;
+    height: 600px;
+    border-radius: 50%;
+    border-top: 1.5px solid rgba(96, 165, 250, 0.85);
+    background: linear-gradient(180deg, rgba(239, 246, 255, 0.6) 0%, rgba(255, 255, 255, 0.95) 25%, #ffffff 100%);
+    box-shadow: 0 -12px 28px -2px rgba(59, 130, 246, 0.35), inset 0 8px 16px rgba(255, 255, 255, 0.9);
+}
+
 /* ---- Card & Layout Elements ---- */
 .stExpander, .card, section[data-testid="stSidebar"], [data-testid="stDataFrame"], [data-testid="stStatus"] {
     background: var(--surface) !important;
     border: 1px solid var(--surface-border) !important;
     border-radius: 12px !important;
     box-shadow: var(--shadow-1) !important;
+    backdrop-filter: blur(8px);
 }
 
 .stExpander { margin-bottom: 20px !important; overflow: hidden; }
@@ -247,7 +280,7 @@ components.html(
     height=0,
 )
 
-# ---------- Suproc Style Hero Header ----------
+# ---------- Hero Header with Globe Arc ----------
 st.markdown(
     """
     <div style="
@@ -255,7 +288,7 @@ st.markdown(
         flex-direction: column; 
         align-items: center; 
         text-align: center; 
-        padding: 2rem 0 3rem 0;
+        padding: 2.5rem 0 1rem 0;
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     ">
         <!-- Eyebrow Badge -->
@@ -318,6 +351,11 @@ st.markdown(
             images, PDFs, Excel/CSV, or pasted text — and get back a validated, 
             categorized expense report in seconds.
         </p>
+    </div>
+
+    <!-- Curved Globe Horizon Line -->
+    <div class="globe-horizon-container">
+        <div class="globe-arc"></div>
     </div>
     """,
     unsafe_allow_html=True,

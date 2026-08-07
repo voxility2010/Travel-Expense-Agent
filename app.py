@@ -1,8 +1,6 @@
 """
 Streamlit UI for the Travel Expense Extraction Agent.
-
-Designed to run both locally (`streamlit run app.py`) and on any Docker-based
-host (Render, etc) with zero changes.
+Updated with Suproc Brand Design System.
 """
 
 from __future__ import annotations
@@ -27,45 +25,59 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ============================================================
-# Design tokens
-#   Background:  #F5F7FB (soft blue-white)
-#   Surface:     #FFFFFF
-#   Border:      #E3E8F1
-#   Accent:      #2F5CFF
-#   Accent dark: #1E3FCC
-#   Text:        #101828 (primary) / #667085 (secondary)
-#   Success:     #17803D / bg #ECFDF3
-#   Warning:     #B54708 / bg #FFFAEB
-#   Type:        Plus Jakarta Sans (UI), IBM Plex Mono (data / labels)
-# ============================================================
-
 CUSTOM_CSS = """
-/* Placeholder type — swap this @import + the two font-family declarations
-   below once the Suproc brand font is available. Everything else in this
-   file references fonts only through these two spots. */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
-html, body, [class*="css"] { font-family: 'Plus Jakarta Sans', sans-serif !important; }
+:root {
+    --app-canvas-bg: #fbfbfb;
+    --app-text-primary: rgb(17 24 39);
+    --app-text-secondary: rgb(71 85 105);
+    
+    --app-btn-primary-bg: radial-gradient(135% 118% at 0% 0%, rgba(226, 232, 240, .12), transparent 55%), linear-gradient(180deg, rgba(39, 51, 72, .9) 0%, rgba(17, 24, 39, .94) 100%);
+    --app-btn-primary-bg-hover: radial-gradient(135% 118% at 0% 0%, rgba(241, 245, 249, .16), transparent 55%), linear-gradient(180deg, rgba(49, 63, 87, .94) 0%, rgba(24, 33, 49, .98) 100%);
+    --app-btn-primary-border: rgba(203, 213, 225, .28);
+    --app-btn-primary-text: rgb(248 250 252);
+    --app-btn-primary-shadow: 0 12px 26px rgba(1, 8, 24, .32), inset 0 1px 0 rgba(241, 245, 249, .14), inset 0 -1px 0 rgba(2, 6, 18, .38);
+    
+    --app-btn-secondary-bg: radial-gradient(150% 100% at 0% 0%, rgba(255, 255, 255, .88), rgba(244, 247, 252, .82) 60%), linear-gradient(170deg, rgba(255, 255, 255, .92), rgba(242, 246, 252, .86));
+    --app-btn-secondary-bg-hover: radial-gradient(150% 100% at 0% 0%, rgba(255, 255, 255, .96), rgba(247, 250, 255, .88) 60%), linear-gradient(170deg, rgba(255, 255, 255, .98), rgba(245, 248, 253, .9));
+    --app-btn-secondary-border: rgba(134, 155, 183, .5);
+    --app-btn-secondary-text: rgb(30 41 59);
+    --app-btn-secondary-shadow: 0 6px 14px rgba(15, 23, 42, .08), inset 0 1px 0 rgba(255, 255, 255, .82);
+    
+    --app-link: #0f6be9;
+    --app-link-hover: #0957bf;
+    --app-success: #0fc27b;
+    --app-success-text: #095a39;
+    
+    --surface: rgba(255, 255, 255, .98);
+    --surface-border: rgba(15, 23, 42, .06);
+    --shadow-1: 0 6px 14px rgba(15, 23, 42, .04);
+}
+
+html, body, [class*="css"] { 
+    font-family: 'Inter', sans-serif !important; 
+    color: var(--app-text-primary) !important;
+    background-color: var(--app-canvas-bg) !important;
+    -webkit-font-smoothing: antialiased;
+}
 
 .stApp {
-    background: radial-gradient(120% 100% at 50% 0%, #EEF2FC 0%, #F5F7FB 45%, #F5F7FB 100%) !important;
+    background-color: var(--app-canvas-bg) !important;
+    background-image: radial-gradient(circle at top, rgba(0, 0, 0, .01), transparent 65%);
 }
+
 .block-container { max-width: 1080px; padding-top: 3rem; padding-bottom: 4rem; }
 
-/* Streamlit's own toolbar (sidebar-collapse arrow + menu) sits fixed on top
-   of the page. Give it a solid background instead of transparent, or content
-   directly underneath (like our eyebrow label) gets visually clipped/cut. */
 [data-testid="stHeader"] {
-    background: #F5F7FB !important;
+    background: transparent !important;
     height: 3.25rem;
 }
-[data-testid="stToolbar"] { right: 1rem; }
 
 code, .mono, .stMarkdown code {
     font-family: 'IBM Plex Mono', monospace !important;
-    background: #F2F4F7;
-    color: #101828;
+    background: rgba(36, 38, 41, .045);
+    color: var(--app-text-primary);
     padding: 2px 6px;
     border-radius: 6px;
     font-size: 0.85em;
@@ -78,57 +90,46 @@ code, .mono, .stMarkdown code {
 }
 .app-header .badge {
     width: 44px; height: 44px; border-radius: 12px;
-    background: linear-gradient(135deg, #2F5CFF, #1E3FCC);
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
     display: flex; align-items: center; justify-content: center;
     font-size: 22px; flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(47,92,255,0.25);
+    box-shadow: var(--shadow-1);
 }
 .app-header h1 {
-    font-size: 1.5rem; font-weight: 700; color: #101828;
-    margin: 0; line-height: 1.2;
+    font-size: 1.75rem; font-weight: 700; color: var(--app-text-primary);
+    margin: 0; line-height: 1.2; letter-spacing: -0.02em;
 }
 .app-header .eyebrow {
     font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
     font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-    color: #2F5CFF; margin: 0 0 2px 0;
+    color: var(--app-link); margin: 0 0 2px 0;
 }
 .app-subtitle {
-    color: #667085; font-size: 0.95rem; margin: 6px 0 28px 0;
-    max-width: 640px; line-height: 1.5;
+    color: var(--app-text-secondary); font-size: 0.95rem; margin: 6px 0 28px 0;
+    max-width: 640px; line-height: 1.58;
 }
 
-/* ---- Expander ---- */
-.stExpander {
-    background: #FFFFFF !important;
-    border: 1px solid #E3E8F1 !important;
-    border-radius: 10px !important;
-    overflow: hidden;
-    margin-bottom: 20px !important;
+/* ---- Expander & Cards ---- */
+.stExpander, .card, section[data-testid="stSidebar"], [data-testid="stDataFrame"], [data-testid="stStatus"] {
+    background: var(--surface) !important;
+    border: 1px solid var(--surface-border) !important;
+    border-radius: 12px !important;
+    box-shadow: var(--shadow-1) !important;
 }
+
+.stExpander { margin-bottom: 20px !important; overflow: hidden; }
 .stExpander > details > summary {
-    font-weight: 500;
-    color: #344054;
-    font-size: 0.9rem;
-    padding: 10px 16px;
+    font-weight: 500; color: var(--app-text-primary); font-size: 0.9rem; padding: 10px 16px;
 }
-.stExpander > details > summary:hover {
-    background: #F9FAFB;
-}
+.stExpander > details > summary:hover { background: rgba(36, 38, 41, .02); }
 .stExpander > details > div {
-    padding: 0 16px 14px 16px;
-    color: #475467;
-    font-size: 0.9rem;
-    line-height: 1.6;
+    padding: 0 16px 14px 16px; color: var(--app-text-secondary); font-size: 0.9rem; line-height: 1.58;
 }
 
-/* ---- Cards ---- */
-.card {
-    background: #FFFFFF; border: 1px solid #E3E8F1; border-radius: 14px;
-    padding: 20px 22px; margin-bottom: 18px;
-    box-shadow: 0 1px 2px rgba(16,24,40,0.04);
-}
+.card { padding: 20px 22px; margin-bottom: 18px; }
 .card-title {
-    font-weight: 600; font-size: 0.95rem; color: #101828;
+    font-weight: 600; font-size: 0.95rem; color: var(--app-text-primary);
     margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
 }
 
@@ -136,180 +137,127 @@ code, .mono, .stMarkdown code {
 .kpi-row { display: flex; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
 .kpi {
     flex: 1; min-width: 140px;
-    background: #FFFFFF; border: 1px solid #E3E8F1; border-radius: 14px;
-    padding: 16px 18px;
-    box-shadow: 0 1px 2px rgba(16,24,40,0.04);
+    background: var(--surface); border: 1px solid var(--surface-border);
+    border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow-1);
 }
 .kpi-label {
     font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
-    text-transform: uppercase; color: #667085; margin-bottom: 6px;
+    text-transform: uppercase; color: var(--app-text-secondary); margin-bottom: 6px;
 }
 .kpi-value {
     font-family: 'IBM Plex Mono', monospace; font-size: 1.6rem;
-    font-weight: 600; color: #101828;
+    font-weight: 600; color: var(--app-text-primary);
 }
-.kpi-value.accent { color: #2F5CFF; }
-.kpi-value.good { color: #17803D; }
+.kpi-value.accent { color: var(--app-link); }
+.kpi-value.good { color: var(--app-success-text); }
 .kpi-value.warn { color: #B54708; }
-
-/* ---- Status chips ---- */
-.chip {
-    display: inline-block; padding: 3px 10px; border-radius: 999px;
-    font-size: 0.78rem; font-weight: 600;
-}
-.chip-ok { background: #ECFDF3; color: #17803D; }
-.chip-warn { background: #FFFAEB; color: #B54708; }
 
 /* ---- Upload zone ---- */
 section[data-testid="stFileUploaderDropzone"] {
-    background: #FFFFFF !important;
-    border: 1.5px dashed #C7D2E8 !important;
-    border-radius: 14px !important;
-    padding: 12px;
-    transition: border-color 0.2s, background 0.2s;
+    background: var(--surface) !important;
+    border: 1px dashed var(--app-btn-secondary-border) !important;
+    border-radius: 12px !important;
+    padding: 12px; transition: border-color 0.2s, background 0.2s;
 }
 section[data-testid="stFileUploaderDropzone"]:hover {
-    border-color: #2F5CFF !important;
-    background: #F8FAFF !important;
-}
-section[data-testid="stFileUploaderDropzone"] > div > small {
-    color: #667085 !important;
-    font-size: 0.78rem !important;
+    border-color: var(--app-link) !important;
+    background: rgba(15, 107, 233, .02) !important;
 }
 
 /* ---- Buttons ---- */
 .stButton > button, .stDownloadButton > button {
-    border-radius: 999px !important; font-weight: 600 !important; border: none !important;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    padding: 0.55rem 1.4rem !important;
-    transition: background 0.15s, transform 0.1s, box-shadow 0.15s !important;
+    border-radius: 999px !important; font-weight: 500 !important;
+    font-family: 'Inter', sans-serif !important;
+    padding: 0.48rem .9rem !important;
+    font-size: .875rem !important;
+    transition: all 0.18s ease !important;
 }
+
+/* Primary Button Suproc Style */
 .stButton > button[kind="primary"], .stDownloadButton > button[kind="primary"] {
-    background: #2F5CFF !important;
-    box-shadow: 0 1px 2px rgba(47,92,255,0.15) !important;
+    background: var(--app-btn-primary-bg) !important;
+    color: var(--app-btn-primary-text) !important;
+    border: 1px solid var(--app-btn-primary-border) !important;
+    box-shadow: var(--app-btn-primary-shadow) !important;
 }
 .stButton > button[kind="primary"]:hover, .stDownloadButton > button[kind="primary"]:hover {
-    background: #1E3FCC !important;
+    background: var(--app-btn-primary-bg-hover) !important;
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(47,92,255,0.28) !important;
 }
-.stButton > button[kind="primary"]:active, .stDownloadButton > button[kind="primary"]:active {
-    transform: translateY(0);
-}
-.stButton > button[kind="primary"]:disabled {
-    background: #B4C6FC !important;
-    cursor: not-allowed !important;
-    transform: none !important;
-    box-shadow: none !important;
-}
+
+/* Secondary Button Suproc Style */
 .stButton > button[kind="secondary"] {
-    background: #FFFFFF !important;
-    color: #101828 !important;
-    border: 1px solid #D0D5DD !important;
+    background: var(--app-btn-secondary-bg) !important;
+    color: var(--app-btn-secondary-text) !important;
+    border: 1px solid var(--app-btn-secondary-border) !important;
+    box-shadow: var(--app-btn-secondary-shadow) !important;
 }
 .stButton > button[kind="secondary"]:hover {
-    border-color: #2F5CFF !important;
-    color: #2F5CFF !important;
+    background: var(--app-btn-secondary-bg-hover) !important;
+    color: var(--app-link) !important;
 }
 
-/* ---- Tabs (file upload vs paste text) ---- */
+/* ---- Tabs ---- */
 .stTabs [data-baseweb="tab-list"] {
-    gap: 4px;
-    background: #EEF1F7;
-    padding: 4px;
-    border-radius: 12px;
-    width: fit-content;
+    gap: 4px; background: rgba(36, 38, 41, .045); padding: 4px;
+    border-radius: 12px; width: fit-content;
 }
 .stTabs [data-baseweb="tab"] {
-    height: 36px;
-    border-radius: 8px !important;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #667085;
-    padding: 0 16px;
+    height: 36px; border-radius: 8px !important; font-size: 0.85rem;
+    font-weight: 500; color: var(--app-text-secondary); padding: 0 16px;
 }
 .stTabs [aria-selected="true"] {
-    background: #FFFFFF !important;
-    color: #101828 !important;
-    box-shadow: 0 1px 2px rgba(16,24,40,0.06);
+    background: var(--surface) !important; color: var(--app-text-primary) !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .08);
 }
-.stTabs [data-testid="stMarkdownContainer"] p { font-size: 0.85rem; }
 
 /* ---- Sidebar ---- */
-section[data-testid="stSidebar"] {
-    background: #FFFFFF !important;
-    border-right: 1px solid #E3E8F1 !important;
-}
+section[data-testid="stSidebar"] { border-right: 1px solid var(--surface-border) !important; }
 section[data-testid="stSidebar"] .block-container { padding-top: 2rem; }
 
 .sb-eyebrow {
     font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem;
     font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-    color: #98A2B3; margin: 0 0 12px 0;
+    color: var(--app-text-secondary); margin: 0 0 12px 0;
 }
 .sb-format {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 0;
-    font-size: 0.85rem; color: #344054; font-weight: 500;
+    display: flex; align-items: center; gap: 10px; padding: 8px 0;
+    font-size: 0.85rem; color: var(--app-text-primary); font-weight: 500;
 }
 .sb-format .sb-icon {
     width: 26px; height: 26px; border-radius: 7px; flex-shrink: 0;
-    background: #EEF2FF; color: #2F5CFF;
+    background: rgba(15, 107, 233, .08); color: var(--app-link);
     display: flex; align-items: center; justify-content: center;
     font-size: 0.75rem; font-weight: 700;
 }
 .sb-status {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 0.8rem; color: #475467; font-weight: 500;
-    margin-top: 22px; padding-top: 16px;
-    border-top: 1px solid #E3E8F1;
+    display: flex; align-items: center; gap: 8px; font-size: 0.8rem;
+    color: var(--app-text-secondary); font-weight: 500; margin-top: 22px;
+    padding-top: 16px; border-top: 1px solid var(--surface-border);
 }
 .sb-status .dot {
     width: 7px; height: 7px; border-radius: 50%;
-    background: #17803D; flex-shrink: 0;
-    box-shadow: 0 0 0 3px #ECFDF3;
-}
-section[data-testid="stSidebar"] .stCaption {
-    color: #98A2B3 !important;
-    font-size: 0.75rem !important;
+    background: var(--app-success); flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(15, 194, 123, 0.2);
 }
 
-/* ---- Dataframe ---- */
-[data-testid="stDataFrame"] {
-    border: 1px solid #E3E8F1 !important;
-    border-radius: 12px !important;
-    overflow: hidden !important;
-}
+/* ---- Dataframe & Charts ---- */
 [data-testid="stDataFrame"] th {
-    background: #F9FAFB !important;
-    color: #475467 !important;
-    font-weight: 500 !important;
-    font-size: 0.82rem !important;
-    border-bottom: 1px solid #E3E8F1 !important;
+    background: rgba(36, 38, 41, .02) !important;
+    color: var(--app-text-secondary) !important;
+    font-weight: 500 !important; font-size: 0.82rem !important;
+    border-bottom: 1px solid var(--surface-border) !important;
 }
 [data-testid="stDataFrame"] td {
-    color: #344054 !important;
-    font-size: 0.85rem !important;
-    border-bottom: 1px solid #F2F4F7 !important;
+    color: var(--app-text-primary) !important; font-size: 0.85rem !important;
+    border-bottom: 1px solid rgba(15, 23, 42, .02) !important;
 }
-
-/* ---- Status widget ---- */
-[data-testid="stStatus"] {
-    background: #FFFFFF !important;
-    border: 1px solid #E3E8F1 !important;
-    border-radius: 12px !important;
-}
-
-/* ---- Bar chart override ---- */
 [data-testid="stVegaLiteChart"] {
-    background: #FFFFFF !important;
-    border-radius: 12px !important;
+    background: var(--surface) !important; border-radius: 12px !important;
 }
-
-hr { border-color: #E3E8F1 !important; }
+hr { border-color: var(--surface-border) !important; }
 """
 
-# Inject CSS via components.html into parent <head> — bypasses Streamlit's sanitizer
 _css_escaped = CUSTOM_CSS.replace("`", "\\`")
 
 components.html(
@@ -326,7 +274,7 @@ components.html(
 
         const link2 = parentDoc.createElement('link');
         link2.rel = 'stylesheet';
-        link2.href = 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap';
+        link2.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap';
         parentDoc.head.appendChild(link2);
 
         const style = parentDoc.createElement('style');
@@ -510,7 +458,7 @@ if "records" in st.session_state:
             cat_df = pd.DataFrame(
                 [{"Category": c, "Total": float(v)} for c, v in summary.total_by_category.items()]
             )
-            st.bar_chart(cat_df.set_index("Category"), color="#2F5CFF", horizontal=True)
+            st.bar_chart(cat_df.set_index("Category"), color="#0f6be9", horizontal=True)
         else:
             st.caption("No categories assigned yet.")
         st.markdown('</div>', unsafe_allow_html=True)
@@ -544,7 +492,7 @@ elif not has_input:
     st.markdown(
         textwrap.dedent(
         """
-        <div class="card" style="text-align:center; padding: 48px 20px; color:#667085; margin-top: 18px;">
+        <div class="card" style="text-align:center; padding: 48px 20px; color:var(--app-text-secondary); margin-top: 18px;">
             Upload one or more expense files above to get started.
         </div>
         """
